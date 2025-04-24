@@ -1,13 +1,15 @@
 # FURIA CS:GO Chat
 
-Um chatbot para fãs da FURIA CS:GO que fornece informações sobre o time, notícias e resultados.
+Um chatbot para fãs da FURIA CS:GO que fornece informações sobre o time, notícias e resultados em tempo real.
 
 ## Funcionalidades
 
 - Chat interativo para perguntas sobre a FURIA CS:GO
-- Exibição de notícias atualizadas sobre o time
-- Interface web amigável e responsiva
-- Atualização automática de notícias
+- Exibição de notícias atualizadas do Draft5
+- Informações sobre próximos jogos
+- Resultados recentes das partidas
+- Interface web moderna e responsiva
+- Atualização automática de dados a cada 5 minutos
 
 ## Requisitos
 
@@ -38,32 +40,41 @@ pip install -r requirements.txt
 
 1. Inicie o servidor:
 ```bash
-python app.py
+python flask_app.py
 ```
 
 2. Acesse o chat no navegador:
 ```
-http://localhost:8000
+http://localhost:3000
 ```
 
 ## Estrutura do Projeto
 
 ```
 furia-chat/
-├── app.py              # Aplicação principal
-├── requirements.txt    # Dependências
+├── flask_app.py        # Aplicação Flask principal
+├── requirements.txt    # Dependências do projeto
 ├── static/            # Arquivos estáticos
+│   ├── css/          # Estilos CSS
+│   └── images/       # Imagens do projeto
 └── templates/         # Templates HTML
-    └── index.html     # Interface do chat
+    └── index.html    # Interface do chat
 ```
 
-## Integração com Fontes de Notícias
+## Funcionalidades do Chat
 
-Para integrar com fontes reais de notícias, você pode:
+O bot pode responder perguntas sobre:
+- Últimos resultados da FURIA
+- Próximos jogos agendados
+- Notícias recentes do time
+- Informações gerais sobre a equipe
 
-1. Usar APIs de sites de esports como HLTV.org
-2. Implementar web scraping de sites de notícias
-3. Integrar com APIs de redes sociais da FURIA
+## Integração com Fontes de Dados
+
+O projeto utiliza:
+- Web scraping do Draft5 para notícias e resultados
+- Cache de dados para otimização de performance
+- Atualização automática a cada 5 minutos
 
 ## Contribuição
 

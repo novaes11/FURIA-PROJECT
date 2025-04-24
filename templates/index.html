@@ -27,6 +27,7 @@
             height: 70px;
             display: flex;
             align-items: center;
+            z-index: 10;
         }
         .container-logo img {
             height: 100%;
@@ -35,6 +36,8 @@
             background-color: white;
             padding: 5px;
             border-radius: 10px;
+            max-width: 100%;
+            object-fit: contain;
         }
         .titulo-principal {
             text-align: center;
@@ -43,6 +46,7 @@
             font-size: 2.5rem;
             padding-top:5px;
             font-family: 'Anton', sans-serif;
+            text-decoration: underline;
         }
         .chat-container {
             height: 60vh;
@@ -83,8 +87,30 @@
             padding: 10px;
         }
         .news-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .news-date {
+            color: #888;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .news-link {
+            color: #ff4655;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .news-link:hover {
+            text-decoration: underline;
         }
         .text-center {
             color: white;
@@ -164,7 +190,7 @@
         }
         #chatContainer {
             background-color:#262c36;
-            border:1px solid white;
+            border:3px solid black;
         }
         #botao-enviar {
             background-color: #404857;
@@ -195,20 +221,57 @@
             border-color: #404857;
             box-shadow: none;
         }
+        .col-md-4{
+            border:3px solid black;
+            border-radius:10px;
+        }
+        .subtitulo {
+            text-align: center;
+            padding-top:10px;
+            margin: 0;
+            color: white;
+            font-size: 1.3rem;
+            font-family: 'Anton', sans-serif;
+            margin-top: -10px;
+        }
+        .tournament-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .tournament-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .tournament-date {
+            color: #888;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .tournament-link {
+            color: #ff4655;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .tournament-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="cabecalho">
         <div class="container-logo">
-            <img src="{{ url_for('static', filename='images/furia-logo.png') }}" 
-                 alt="Logo FURIA" 
-                 onerror="this.onerror=null; this.src='https://furia.gg/wp-content/uploads/2023/05/furia-logo.png'; console.log('Erro ao carregar imagem local, usando fallback');"
-                 onload="console.log('Imagem carregada com sucesso')">
-
-                    <div class="titulo-logo"><h4><em><strong>FURIA</strong></em></h4></div>
+            <!-- Imagem da logo sem estilos -->
+            <img src="https://furia.gg/wp-content/uploads/2023/05/furia-logo.png" alt="Logo FURIA">
+            <div class="titulo-logo"><h4><em><strong>FURIA</strong></em></h4></div>
         </div>
         <div class="container">
             <h1 class="titulo-principal"><em>ASSISTENTE</em></h1>
+            <h4 class="subtitulo"><i>chat bot</i></h4>
         </div>
     </div>
     
@@ -230,8 +293,19 @@
                 
                 <div class="col-md-4">
                     <h3 class="text-center">Últimas Notícias</h3>
-                    <div class="news-container" id="newsContainer">
-                        <!-- Notícias serão carregadas aqui -->
+                    <div class="news-container">
+                        <div id="news-list">
+                            <!-- As notícias serão carregadas aqui -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3 class="text-center">Campeonatos</h3>
+                    <div class="tournaments-container">
+                        <div id="tournaments-list">
+                            <!-- Os campeonatos serão carregados aqui -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -281,23 +355,53 @@
         async function loadNews() {
             try {
                 const response = await fetch('/api/news');
-                const data = await response.json();
-                const container = document.getElementById('newsContainer');
+                const news = await response.json();
+                const newsList = document.getElementById('news-list');
+                newsList.innerHTML = '';
                 
-                container.innerHTML = data.news.map(news => `
-                    <div class="news-item">
-                        <h5>${news.title}</h5>
-                        <small>${news.date}</small>
-                        <p>${news.content}</p>
-                    </div>
-                `).join('');
+                news.forEach(item => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <h4>${item.title}</h4>
+                        <p class="news-date">${item.date}</p>
+                        <a href="${item.link}" target="_blank" class="news-link">Ler mais</a>
+                    `;
+                    newsList.appendChild(newsItem);
+                });
             } catch (error) {
                 console.error('Erro ao carregar notícias:', error);
             }
         }
 
-        // Carrega notícias ao iniciar
-        loadNews();
+        // Função para carregar campeonatos
+        async function loadTournaments() {
+            try {
+                const response = await fetch('/api/tournaments');
+                const tournaments = await response.json();
+                const tournamentsList = document.getElementById('tournaments-list');
+                tournamentsList.innerHTML = '';
+                
+                tournaments.forEach(item => {
+                    const tournamentItem = document.createElement('div');
+                    tournamentItem.className = 'tournament-item';
+                    tournamentItem.innerHTML = `
+                        <h4>${item.name}</h4>
+                        <p class="tournament-date">${item.date}</p>
+                        <a href="${item.link}" target="_blank" class="tournament-link">Ver detalhes</a>
+                    `;
+                    tournamentsList.appendChild(tournamentItem);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar campeonatos:', error);
+            }
+        }
+
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+            loadTournaments();
+        });
 
         // Atualiza notícias a cada 5 minutos
         setInterval(loadNews, 300000);
