@@ -169,59 +169,7 @@ def process_chat_message(message):
     if "tchau" in message or "até logo" in message or "adeus" in message or "muito obrigado" in message or "obrigado" in message or "flw" in message:
         return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
     
-    if "sim" in message or "estatísticas" in message:
-        results = fetch_furia_results()
-        if results:
-            latest_result = results[0]
-            response = "📊 ESTATÍSTICAS DO ÚLTIMO JOGO 📊\n"
-            response += "=" * 40 + "\n\n"
-            response += f"⚔️ FURIA vs {latest_result['adversario']}\n"
-            response += f"📅 {latest_result['data']}\n\n"
-            
-            response += "🐯 FURIA:\n"
-            response += "-" * 20 + "\n"
-            for jogador, stats in latest_result['estatisticas']['FURIA'].items():
-                response += f"\n{jogador}:\n"
-                for stat, valor in stats.items():
-                    response += f"• {stat}: {valor}\n"
-            
-            if latest_result['adversario'] in latest_result['estatisticas']:
-                response += f"\n⚔️ {latest_result['adversario']}:\n"
-                response += "-" * 20 + "\n"
-                for jogador, stats in latest_result['estatisticas'][latest_result['adversario']].items():
-                    response += f"\n{jogador}:\n"
-                    for stat, valor in stats.items():
-                        response += f"• {stat}: {valor}\n"
-            
-            response += "\n" + "=" * 40 + "\n\n"
-            response += "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
-            response += "   Posso te ajudar com:\n"
-            response += "- Últimos resultados\n"
-            response += "- Próximos jogos\n"
-            response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
-            # Aqui é onde você converte para HTML com <br>
-            response_html = response.replace("\n", "<br>")
-            return response_html
-            return response
-
-    if "não" in message or "nao" in message or "Não" in message or "Nao" in message:
-        if "estatísticas" in message:
-            response = "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
-            response += "   Posso te ajudar com:\n"
-            response += "- Últimos resultados\n"
-            response += "- Próximos jogos\n"
-            response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
-            # Aqui é onde você converte para HTML com <br>
-            response_html = response.replace("\n", "<br>")
-            return response_html
-            return response
-        return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
-    
-    if "notícia" in message or "novidade" in message or "noticia" in message or "noticias" in message or "novidades" in message:
+    elif "notícia" in message or "novidade" in message or "noticia" in message or "noticias" in message or "novidades" in message:
         news = fetch_furia_news()
         if news:
             latest_news = news[0]
@@ -254,10 +202,61 @@ def process_chat_message(message):
                 response += f"• {mapa}: {placar}\n"
             response += "\n" + "=" * 40 + "\n\n"
             response += "❓ Deseja ver as estatísticas detalhadas deste jogo?\n"
+            
+            def process_chat_message(message):
+                    """Processa a mensagem do chat e retorna uma resposta apropriada"""
+                    message = message.lower()
+                    if "sim" in message or "estatísticas" in message:
+                        results = fetch_furia_results()
+                        if results:
+                            latest_result = results[0]
+                            response = "📊 ESTATÍSTICAS DO ÚLTIMO JOGO 📊\n"
+                            response += "=" * 40 + "\n\n"
+                            response += f"⚔️ FURIA vs {latest_result['adversario']}\n"
+                            response += f"📅 {latest_result['data']}\n\n"
+                            
+                            response += "🐯 FURIA:\n"
+                            response += "-" * 20 + "\n"
+                            for jogador, stats in latest_result['estatisticas']['FURIA'].items():
+                                response += f"\n{jogador}:\n"
+                                for stat, valor in stats.items():
+                                    response += f"• {stat}: {valor}\n"
+                            
+                            if latest_result['adversario'] in latest_result['estatisticas']:
+                                response += f"\n⚔️ {latest_result['adversario']}:\n"
+                                response += "-" * 20 + "\n"
+                                for jogador, stats in latest_result['estatisticas'][latest_result['adversario']].items():
+                                    response += f"\n{jogador}:\n"
+                                    for stat, valor in stats.items():
+                                        response += f"• {stat}: {valor}\n"
+                            
+                            response += "\n" + "=" * 40 + "\n\n"
+                            response += "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
+                            response += "   Posso te ajudar com:\n"
+                            response += "- Últimos resultados\n"
+                            response += "- Próximos jogos\n"
+                            response += "- Notícias recentes\n"
+                            response += "- Estatísticas dos jogos\n"
+                            response += "- Campeonatos\n\n"
+
+                    elif "não" in message or "nao" in message or "Não" in message or "Nao" in message:
+                        if "estatísticas" in message:
+                            response = "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
+                            response += "   Posso te ajudar com:\n"
+                            response += "- Últimos resultados\n"
+                            response += "- Próximos jogos\n"
+                            response += "- Notícias recentes\n"
+                            response += "- Estatísticas dos jogos\n"
+                            response += "- Campeonatos\n\n"
+                            # Aqui é onde você converte para HTML com <br>
+                            response_html = response.replace("\n", "<br>")
+                            return response_html
+                            return response
+                        return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
+                    
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
-            
             return response
         return "Desculpe, não consegui encontrar o resultado do último jogo."
     
@@ -288,7 +287,7 @@ def process_chat_message(message):
         return "Desculpe, não consegui encontrar o histórico de jogos."
     
     elif "Outros resultados" in message or "stats" in message or "estatisticas" in message:
-        return "Por favor, especifique a data do jogo que deseja ver as estatísticas (ex: '08/04/2025')"
+        response += "Por favor, especifique a data do jogo que deseja ver as estatísticas (ex: '08/04/2025')"
         results = fetch_furia_results()
         data_mencoes = ["08/04/2025", "07/04/2025", "06/04/2025", "05/04/2025"]
         data_encontrada = none
