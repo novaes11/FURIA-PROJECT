@@ -59,6 +59,15 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            scrollbar-width: thin;              /* Firefox */
+            scrollbar-color: #404857 #fff; /* Firefox */
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #404857;
+            border-radius: 10px;
         }
         .message {
             margin-bottom: 10px;
@@ -294,6 +303,15 @@
                     <div class="chat-container" id="chatContainer">
                         <div class="message bot-message">
                             Fala, torcedor! 👊 Eu sou o assistente oficial da FURIA! Pronto pra te ajudar com tudo que rola no universo da Pantera. Do que precisa?
+                            <p>Sugestões:</p>
+                            <ul>
+                                <li>Últimos resultados</li>
+                                <li>Próximos jogos</li>
+                                <li>Notícias recentes</li>
+                                <li>Estatísticas dos jogos</li>
+                                <li>Campeonatos</li>
+                                <li>Line-UP (ainda não funcional)</li>
+                            </ul>
                         </div>
                     </div>
                     
@@ -304,7 +322,7 @@
                 </div>
                 
                 <div class="col-md-4">
-                    <h3 class="text-center">Últimas Notícias</h3>
+                    <h3 class="text-center">Notícias Importantes</h3>
                     <div class="news-container">
                         <div id="news-list">
                             <!-- As notícias serão carregadas aqui -->
