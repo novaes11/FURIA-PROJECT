@@ -59,6 +59,15 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            scrollbar-width: thin;              /* Firefox */
+            scrollbar-color: #404857 #fff; /* Firefox */
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #404857;
+            border-radius: 10px;
         }
         .message {
             margin-bottom: 10px;
@@ -80,7 +89,8 @@
             
         }
         .news-container {
-            max-height: 200px;
+            flex-grow: 1;
+            max-height: 60vh;
             overflow-y: auto;
             background-color: white;
             border-radius: 10px;
@@ -113,8 +123,12 @@
             text-decoration: underline;
         }
         .text-center {
-            color: white;
-            font-family: 'Montserrat';
+            color:white;
+            font-family: 'Anton', sans-serif;
+            padding-top:10px;
+            background-color:black;
+            padding:5px 5px;
+            
         }
         .content-section {
             /* Cor de fundo padrão caso a imagem não carregue */
@@ -175,7 +189,7 @@
         }
         .row {
             
-            
+            height: 100%;
             /* Espaçamento interno */
             padding: 20px;
             
@@ -192,8 +206,8 @@
             background-color:#262c36;
             border:3px solid black;
         }
-        #botao-enviar {
-            background-color: #404857;
+        #botao-enviar:hover{
+            background-color:darkblue;
         }
         .titulo-logo{
             color: white;
@@ -221,10 +235,17 @@
             border-color: #404857;
             box-shadow: none;
         }
-        .col-md-4{
-            border:3px solid black;
-            border-radius:10px;
+        .col-md-4 {
+            border: 3px solid black;
+            border-radius: 10px;
+            flex-direction: column;
+            height: 60vh;
+            display:flex;
+            background-color: white;
+            padding: 0px 0px 0px 0px;
+            
         }
+
         .subtitulo {
             text-align: center;
             padding-top:10px;
@@ -281,7 +302,16 @@
                 <div class="col-md-8">
                     <div class="chat-container" id="chatContainer">
                         <div class="message bot-message">
-                            Olá! Sou o assistente da FURIA. Como posso ajudar você hoje?
+                            Fala, torcedor! 👊 Eu sou o assistente oficial da FURIA! Pronto pra te ajudar com tudo que rola no universo da Pantera. Do que precisa?
+                            <p>Sugestões:</p>
+                            <ul>
+                                <li>Últimos resultados</li>
+                                <li>Próximos jogos</li>
+                                <li>Notícias recentes</li>
+                                <li>Estatísticas dos jogos</li>
+                                <li>Campeonatos</li>
+                                <li>Line-UP (ainda não funcional)</li>
+                            </ul>
                         </div>
                     </div>
                     
@@ -292,19 +322,10 @@
                 </div>
                 
                 <div class="col-md-4">
-                    <h3 class="text-center">Últimas Notícias</h3>
+                    <h3 class="text-center">Notícias Importantes</h3>
                     <div class="news-container">
                         <div id="news-list">
                             <!-- As notícias serão carregadas aqui -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <h3 class="text-center">Campeonatos</h3>
-                    <div class="tournaments-container">
-                        <div id="tournaments-list">
-                            <!-- Os campeonatos serão carregados aqui -->
                         </div>
                     </div>
                 </div>
@@ -346,7 +367,7 @@
             const container = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}-message`;
-            messageDiv.textContent = text;
+            messageDiv.innerHTML = text;
             container.appendChild(messageDiv);
             container.scrollTop = container.scrollHeight;
         }
