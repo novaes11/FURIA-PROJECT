@@ -27,13 +27,34 @@ def fetch_draft5_data():
         'news': "https://draft5.gg/equipe/330-FURIA/noticias",
         'matches': "https://draft5.gg/proximas-partidas",
         'results': "https://draft5.gg/resultados",
-        'tournaments': "https://draft5.gg/campeonatos"
+        'tournaments': "https://draft5.gg/campeonatos",
+        'line-up': "https://draft5.gg/equipe/330-FURIA"
     }
     
     try:
-        # Aqui você implementaria o web scraping real
-        # Por enquanto, retornamos dados mockados
-        return True
+        url = "https://draft5.gg/equipe/330-FURIA"  # Coloque aqui o link real
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            match = soup.find('div', class_='match-result')
+            if match:
+                team = match.find('div', class_='team').text
+                score = match.find('div', class_='score').text
+                opponent = match.find('div', class_='opponent').text
+                date = match.find('div', class_='date').text
+
+                return {
+                    "team": team,
+                    "score": score,
+                    "opponent": opponent,
+                    "date": date
+                }
+            else:
+                return {"error": "Resultado não encontrado"}
+        else:
+            return {"error": "Erro ao acessar a página"}
     except Exception as e:
         print(f"Erro ao buscar dados: {str(e)}")
         return None
@@ -162,6 +183,89 @@ def fetch_furia_results():
         }
     ]
 
+def fetch_furia_lineup():
+    """Retorna o line-up atual da FURIA"""
+    return {
+        "players": [
+            {
+                "nickname": "KSCERATO",
+                "name": "Kaike Cerato",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 24,
+                "stats": {
+                    "rating": 1.15,
+                    "kills": 1250,
+                    "deaths": 1000,
+                    "assists": 500,
+                    "headshots": 65
+                }
+            },
+            {
+                "nickname": "yuurih",
+                "name": "Yuri Santos",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 23,
+                "stats": {
+                    "rating": 1.12,
+                    "kills": 1200,
+                    "deaths": 1050,
+                    "assists": 480,
+                    "headshots": 62
+                }
+            },
+            {
+                "nickname": "chelo",
+                "name": "André Oliveira",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 25,
+                "stats": {
+                    "rating": 1.08,
+                    "kills": 1150,
+                    "deaths": 1080,
+                    "assists": 450,
+                    "headshots": 60
+                }
+            },
+            {
+                "nickname": "FalleN",
+                "name": "Gabriel Toledo",
+                "role": "AWPer",
+                "country": "Brazil",
+                "age": 32,
+                "stats": {
+                    "rating": 1.05,
+                    "kills": 1100,
+                    "deaths": 1100,
+                    "assists": 520,
+                    "headshots": 58
+                }
+            },
+            {
+                "nickname": "skullz",
+                "name": "Rafael Costa",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 22,
+                "stats": {
+                    "rating": 1.10,
+                    "kills": 1180,
+                    "deaths": 1060,
+                    "assists": 470,
+                    "headshots": 61
+                }
+            }
+        ],
+        "coach": {
+            "name": "Nicholas Nogueira",
+            "nickname": "guerri",
+            "country": "Brazil",
+            "age": 31
+        }
+    }
+
 def process_chat_message(message):
     """Processa a mensagem do chat e retorna uma resposta apropriada"""
     message = message.lower()
@@ -199,8 +303,8 @@ def process_chat_message(message):
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up\n\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
@@ -213,8 +317,8 @@ def process_chat_message(message):
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up\n\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
@@ -230,8 +334,8 @@ def process_chat_message(message):
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up\n\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
@@ -279,8 +383,8 @@ def process_chat_message(message):
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
-            response += "- Estatísticas dos jogos\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up\n\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
@@ -326,14 +430,14 @@ def process_chat_message(message):
         
         
     
-    elif "próximo jogo" in message or "próxima partida" in message:
+    elif "próximo jogo" in message or "próxima partida" in message or "proximo jogo" in message or "proxima partida" in message or "proximo jogo da" in message or "proxima partida da" in message or "proximos jogos" in message or "próximos jogos" in message:
         response = "O próximo compromisso da FURIA é a PGL Astana 2025, que será realizada entre os dias 10 e 18 de maio, no Cazaquistão.\n\n"
         response += "Precisa de mais alguma informação, torcedor?🐯🔥\nPosso te ajudar com:\n"
         response += "- Últimos resultados\n"
         response += "- Próximos jogos\n"
         response += "- Notícias recentes\n"
-        response += "- Estatísticas dos jogos\n"
-        response += "- Campeonatos\n\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up\n\n"
         # Aqui é onde você converte para HTML com <br>
         response_html = response.replace("\n", "<br>")
         return response_html
@@ -345,20 +449,54 @@ def process_chat_message(message):
         response += "- Últimos resultados\n"
         response += "- Próximos jogos\n"
         response += "- Notícias recentes\n"
-        response += "- Estatísticas dos jogos\n"
-        response += "- Campeonatos\n\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up\n\n"
         # Aqui é onde você converte para HTML com <br>
         response_html = response.replace("\n", "<br>")
         return response_html
         return response
+    
+    elif "line-up" in message or "lineup" in message or "jogadores" in message or "equipe" in message or "time" in message:
+        lineup = fetch_furia_lineup()
+        response = "🐯 LINE-UP DA FURIA 🐯\n"
+        response += "=" * 40 + "\n\n"
+        
+        for player in lineup['players']:
+            response += f"🎮 {player['nickname']} ({player['name']})\n"
+            response += f"📊 Role: {player['role']}\n"
+            response += f"🌎 País: {player['country']}\n"
+            response += f"📅 Idade: {player['age']}\n"
+            response += f"📈 Estatísticas:\n"
+            response += f"   • Rating: {player['stats']['rating']}\n"
+            response += f"   • Kills: {player['stats']['kills']}\n"
+            response += f"   • Deaths: {player['stats']['deaths']}\n"
+            response += f"   • Assists: {player['stats']['assists']}\n"
+            response += f"   • Headshots: {player['stats']['headshots']}%\n"
+            response += "\n"
+        
+        response += f"👨‍🏫 Coach: {lineup['coach']['name']} ({lineup['coach']['nickname']})\n"
+        response += f"🌎 País: {lineup['coach']['country']}\n"
+        response += f"📅 Idade: {lineup['coach']['age']}\n\n"
+        
+        response += "=" * 40 + "\n\n"
+        response += "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
+        response += "   Posso te ajudar com:\n"
+        response += "- Últimos resultados\n"
+        response += "- Próximos jogos\n"
+        response += "- Notícias recentes\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up\n\n"
+        
+        response_html = response.replace("\n", "<br>")
+        return response_html
     
     else:
         response = "Desculpe, não entendi sua pergunta. Você pode perguntar sobre:\n"
         response += "- Últimos resultados\n"
         response += "- Próximos jogos\n"
         response += "- Notícias recentes\n"
-        response += "- Estatísticas dos jogos\n"
-        response += "- Campeonatos\n\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up\n\n"
         response += "O que você gostaria de saber, torcedor? 🐯🔥"
         # Aqui é onde você converte para HTML com <br>
         response_html = response.replace("\n", "<br>")
@@ -380,6 +518,11 @@ def chat():
     message = data.get('message', '')
     response = process_chat_message(message)
     return jsonify({'response': response})
+
+@app.route('/api/lineup')
+def get_lineup():
+    lineup = fetch_furia_lineup()
+    return jsonify(lineup)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True) 
