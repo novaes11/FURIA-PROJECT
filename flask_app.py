@@ -7,6 +7,9 @@ from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
 
+# Variável para controlar o estado do usuário (em algum lugar no seu código)
+estado_usuario = {}
+
 # Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
@@ -27,13 +30,34 @@ def fetch_draft5_data():
         'news': "https://draft5.gg/equipe/330-FURIA/noticias",
         'matches': "https://draft5.gg/proximas-partidas",
         'results': "https://draft5.gg/resultados",
-        'tournaments': "https://draft5.gg/campeonatos"
+        'tournaments': "https://draft5.gg/campeonatos",
+        'line-up': "https://draft5.gg/equipe/330-FURIA"
     }
     
     try:
-        # Aqui você implementaria o web scraping real
-        # Por enquanto, retornamos dados mockados
-        return True
+        url = "https://draft5.gg/equipe/330-FURIA"  # Coloque aqui o link real
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            match = soup.find('div', class_='match-result')
+            if match:
+                team = match.find('div', class_='team').text
+                score = match.find('div', class_='score').text
+                opponent = match.find('div', class_='opponent').text
+                date = match.find('div', class_='date').text
+
+                return {
+                    "team": team,
+                    "score": score,
+                    "opponent": opponent,
+                    "date": date
+                }
+            else:
+                return {"error": "Resultado não encontrado"}
+        else:
+            return {"error": "Erro ao acessar a página"}
     except Exception as e:
         print(f"Erro ao buscar dados: {str(e)}")
         return None
@@ -65,6 +89,89 @@ def fetch_furia_news():
             "link": "https://draft5.gg/noticias/novo-jogador"
         }
     ]
+
+def fetch_furia_lineup():
+    """Retorna o line-up atual da FURIA"""
+    return {
+        "players": [
+            {
+                "nickname": "KSCERATO",
+                "name": "Kaike Cerato",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 24,
+                "stats": {
+                    "rating": 1.15,
+                    "kills": 1250,
+                    "deaths": 1000,
+                    "assists": 500,
+                    "headshots": 65
+                }
+            },
+            {
+                "nickname": "yuurih",
+                "name": "Yuri Santos",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 23,
+                "stats": {
+                    "rating": 1.12,
+                    "kills": 1200,
+                    "deaths": 1050,
+                    "assists": 480,
+                    "headshots": 62
+                }
+            },
+            {
+                "nickname": "chelo",
+                "name": "André Oliveira",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 25,
+                "stats": {
+                    "rating": 1.08,
+                    "kills": 1150,
+                    "deaths": 1080,
+                    "assists": 450,
+                    "headshots": 60
+                }
+            },
+            {
+                "nickname": "FalleN",
+                "name": "Gabriel Toledo",
+                "role": "AWPer",
+                "country": "Brazil",
+                "age": 32,
+                "stats": {
+                    "rating": 1.05,
+                    "kills": 1100,
+                    "deaths": 1100,
+                    "assists": 520,
+                    "headshots": 58
+                }
+            },
+            {
+                "nickname": "skullz",
+                "name": "Rafael Costa",
+                "role": "Rifler",
+                "country": "Brazil",
+                "age": 22,
+                "stats": {
+                    "rating": 1.10,
+                    "kills": 1180,
+                    "deaths": 1060,
+                    "assists": 470,
+                    "headshots": 61
+                }
+            }
+        ],
+        "coach": {
+            "name": "Nicholas Nogueira",
+            "nickname": "guerri",
+            "country": "Brazil",
+            "age": 31
+        }
+    }
 
 def fetch_furia_results():
     """Retorna os últimos resultados da FURIA"""
@@ -162,7 +269,8 @@ def fetch_furia_results():
         }
     ]
 user_context = {
-    "esperando_estatisticas": False
+    "esperando_estatisticas": False,
+    "esperando_data_estatisticas": False
 }
 
 def process_chat_message(message):
@@ -170,20 +278,70 @@ def process_chat_message(message):
     message = message.lower()
     global user_context
     
-    if "tchau" in message or "até logo" in message or "adeus" in message or "muito obrigado" in message or "obrigado" in message or "flw" in message:
+    # Se estiver esperando data de estatísticas
+    if user_context["esperando_data_estatisticas"]:
+        user_context["esperando_data_estatisticas"] = False
+        results = fetch_furia_results()
+        data_mencoes = ["08/04/2025", "07/04/2025", "06/04/2025", "05/04/2025"]
+        data_encontrada = None
+
+        for data in data_mencoes:
+            if data in message:
+                data_encontrada = data
+                break
+
+        if data_encontrada:
+            for result in results:
+                if result["data"] == data_encontrada:
+                    response = f"📅Estatísticas do jogo contra {result['adversario']} em {result['data']}📅:\n\n"
+                    response += "🐯FURIA🐯:\n"
+                    for jogador, stats in result['estatisticas']['FURIA'].items():
+                        response += f"\n{jogador}:\n"
+                        for stat, valor in stats.items():
+                            response += f"- {stat}: {valor}\n"
+
+                    if result['adversario'] in result['estatisticas']:
+                        response += f"\n{result['adversario']}:\n"
+                        for jogador, stats in result['estatisticas'][result['adversario']].items():
+                            response += f"\n{jogador}:\n"
+                            for stat, valor in stats.items():
+                                response += f"- {stat}: {valor}\n"
+
+                    response += "\nPrecisa de mais alguma informação, torcedor? Posso te ajudar com:\n"
+                    response += "- Últimos resultados\n"
+                    response += "- Próximos jogos\n"
+                    response += "- Notícias recentes\n"
+                    response += "- Campeonatos\n"
+                    response += "- Line-up FURIA\n"
+                    response_html = response.replace("\n", "<br>")
+                    return response_html
+        return "Desculpe, não consegui encontrar as estatísticas para a data informada. As datas disponíveis são: 08/04/2025, 07/04/2025, 06/04/2025, 05/04/2025"
+
+    elif "específicas" in message or "stats" in message or "estatisticas" in message:
+        user_context["esperando_data_estatisticas"] = True
+        response = "Por favor, especifique a data do jogo que deseja ver as estatísticas.\n"
+        response += "Datas disponíveis:\n"
+        response += "- 📅08/04/2025\n"
+        response += "- 📅07/04/2025\n"
+        response += "- 📅06/04/2025\n"
+        response += "- 📅05/04/2025"
+        response_html = response.replace("\n", "<br>")
+        return response_html
+    
+    elif "tchau" in message or "até logo" in message or "adeus" in message or "muito obrigado" in message or "obrigado" in message or "flw" in message:
         return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
     
     elif "notícia" in message or "novidade" in message or "noticia" in message or "noticias" in message or "novidades" in message:
         news = fetch_furia_news()
         if news:
             latest_news = news[0]
-            response = f"A última notícia é: {latest_news['title']} ({latest_news['date']})\n\n"
+            response = f"📅A última notícia é: {latest_news['title']} ({latest_news['date']})📅\n\n"
             response += "Precisa de mais alguma informação, torcedor?🐯🔥\nPosso te ajudar com:\n"
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
-            response += "- Notícias recentes\n"
             response += "- Estatísticas específicas de algum jogo\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up FURIA\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
@@ -227,7 +385,7 @@ def process_chat_message(message):
             response += f"⚔️ FURIA vs {latest_result['adversario']}\n"
             response += f"📅 {latest_result['data']}\n\n"
 
-            response += "🐯 FURIA:\n"
+            response += " FURIA :\n"
             response += "-" * 20 + "\n"
             for jogador, stats in latest_result['estatisticas']['FURIA'].items():
                 response += f"\n{jogador}:\n"
@@ -247,7 +405,9 @@ def process_chat_message(message):
             response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
+            response += "- Estatísticas específicas de algum jogo\n"
             response += "- Campeonatos\n"
+            response += "- Line-up FURIA\n"
             return response.replace("\n", "<br>")
 
     # ❓ Caso nada tenha sido entendido
@@ -259,12 +419,13 @@ def process_chat_message(message):
         user_context["esperando_estatisticas"] = False
 
         response = "💡 Tranquilo! Se precisar de mais alguma coisa, é só me chamar! 🐯🔥\n"
-        response += "   Posso te ajudar com:\n"
+        response += "  Posso te ajudar com:\n"
         response += "- Últimos resultados\n"
         response += "- Próximos jogos\n"
         response += "- Notícias recentes\n"
         response += "- Estatísticas específicas de algum jogo\n"
-        response += "- Campeonatos\n\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up FURIA\n"
 
         return response.replace("\n", "<br>")
     
@@ -273,74 +434,39 @@ def process_chat_message(message):
         if results:
             response = "Últimos jogos da FURIA:\n\n"
             for result in results:
-                response += f"Data: {result['data']}\n"
-                response += f"Adversário: {result['adversario']}\n"
-                response += f"Torneio: {result['torneio']}\n"
-                response += f"Resultado: {result['resultado']}\n"
-                response += "Placares por mapa:\n"
+                response += f"📅Data: {result['data']}📅\n"
+                response += f"⚔️Adversário: {result['adversario']}⚔️\n"
+                response += f"🏆Torneio: {result['torneio']}🏆\n"
+                response += f"🎮Resultado: {result['resultado']}🎮\n"
+                response += "🗺️Placares por mapa:\n"
                 for mapa, placar in result['placares'].items():
                     response += f"- {mapa}: {placar}\n"
                 response += "\n"
             response += "Precisa de mais alguma informação, torcedor?🐯🔥\n Posso te ajudar com:\n"
-            response += "- Últimos resultados\n"
             response += "- Próximos jogos\n"
             response += "- Notícias recentes\n"
             response += "- Estatísticas específicas de algum jogo\n"
-            response += "- Campeonatos\n\n"
+            response += "- Campeonatos\n"
+            response += "- Line-up FURIA\n\n"
             # Aqui é onde você converte para HTML com <br>
             response_html = response.replace("\n", "<br>")
             return response_html
             return response
         return "Desculpe, não consegui encontrar o histórico de jogos."
     
-    elif "específicas" in message or "stats" in message or "estatisticas" in message:
-        response = "Por favor, especifique a data do jogo que deseja ver as estatísticas (ex: '08/04/2025')"
-        results = fetch_furia_results()
-        data_mencoes = ["08/04/2025", "07/04/2025", "06/04/2025", "05/04/2025"]
-        data_encontrada = None  # Corrigido para None
-
-        for data in data_mencoes:
-            if data in message:
-                data_encontrada = data
-                break
-
-        if data_encontrada:  # Se uma data foi encontrada
-            for result in results:
-                if result["data"] == data_encontrada:
-                    response = f"Estatísticas do jogo contra {result['adversario']} em {result['data']}:\n\n"
-                    response += "FURIA:\n"
-                    for jogador, stats in result['estatisticas']['FURIA'].items():
-                        response += f"\n{jogador}:\n"
-                        for stat, valor in stats.items():
-                            response += f"- {stat}: {valor}\n"
-
-                    if result['adversario'] in result['estatisticas']:
-                        response += f"\n{result['adversario']}:\n"
-                        for jogador, stats in result['estatisticas'][result['adversario']].items():
-                            response += f"\n{jogador}:\n"
-                            for stat, valor in stats.items():
-                                response += f"- {stat}: {valor}\n"
-
-                    response += "\nPrecisa de mais alguma informação, torcedor? Posso te ajudar com:\n"
-                    response += "- Últimos resultados\n"
-                    response += "- Próximos jogos\n"
-                    response += "- Notícias recentes\n"
-                    # Converte para HTML com <br>
-                    response_html = response.replace("\n", "<br>")
-                    return response_html  # Retorna a resposta convertida para HTML
-        # Caso a data não seja encontrada:
-        return "Desculpe, não consegui encontrar as estatísticas para a data informada."
+    
         
         
     
-    elif "próximo jogo" in message or "próxima partida" in message:
+    elif "próximo jogo" in message or "próxima partida" in message or "proximo jogo" in message or "proxima partida" in message or "próximos jogos" in message or "proximos jogos" in message:
         response = "O próximo compromisso da FURIA é a PGL Astana 2025, que será realizada entre os dias 10 e 18 de maio, no Cazaquistão.\n\n"
         response += "Precisa de mais alguma informação, torcedor?🐯🔥\nPosso te ajudar com:\n"
         response += "- Últimos resultados\n"
-        response += "- Próximos jogos\n"
+
         response += "- Notícias recentes\n"
         response += "- Estatísticas específicas de algum jogo\n"
-        response += "- Campeonatos\n\n"
+        response += "- Campeonatos\n"
+        response += "- Line-up FURIA\n\n"
         # Aqui é onde você converte para HTML com <br>
         response_html = response.replace("\n", "<br>")
         return response_html
@@ -353,11 +479,45 @@ def process_chat_message(message):
         response += "- Próximos jogos\n"
         response += "- Notícias recentes\n"
         response += "- Estatísticas específicas de algum jogo\n"
-        response += "- Campeonatos\n\n"
+        response += "- Line-up FURIA\n\n"
         # Aqui é onde você converte para HTML com <br>
         response_html = response.replace("\n", "<br>")
         return response_html
         return response
+    
+    elif "line-up" in message or "lineup" in message or "jogadores" in message or "equipe" in message or "time" in message:
+        lineup = fetch_furia_lineup()
+        response = "🐯 LINE-UP DA FURIA 🐯\n"
+        response += "=" * 40 + "\n\n"
+        
+        for player in lineup['players']:
+            response += f"🎮 {player['nickname']} ({player['name']})\n"
+            response += f"📊 Role: {player['role']}\n"
+            response += f"🌎 País: {player['country']}\n"
+            response += f"📅 Idade: {player['age']}\n"
+            response += f"📈 Estatísticas:\n"
+            response += f"   • Rating: {player['stats']['rating']}\n"
+            response += f"   • Kills: {player['stats']['kills']}\n"
+            response += f"   • Deaths: {player['stats']['deaths']}\n"
+            response += f"   • Assists: {player['stats']['assists']}\n"
+            response += f"   • Headshots: {player['stats']['headshots']}%\n"
+            response += "\n"
+        
+        response += f"👨‍🏫 Coach: {lineup['coach']['name']} ({lineup['coach']['nickname']})\n"
+        response += f"🌎 País: {lineup['coach']['country']}\n"
+        response += f"📅 Idade: {lineup['coach']['age']}\n\n"
+        
+        response += "=" * 40 + "\n\n"
+        response += "💡 Precisa de mais alguma informação, torcedor?🐯🔥\n"
+        response += "   Posso te ajudar com:\n"
+        response += "- Últimos resultados\n"
+        response += "- Próximos jogos\n"
+        response += "- Notícias recentes\n"
+        response += "- Campeonatos\n"
+        response += "- Estatísticas específicas de algum jogo\n"
+        
+        response_html = response.replace("\n", "<br>")
+        return response_html
     
     else:
         response = "Desculpe, não entendi sua pergunta. Você pode perguntar sobre:\n"
