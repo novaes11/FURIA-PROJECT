@@ -34,7 +34,7 @@
             width: auto;
             display: block;
             padding: 0px;
-            border-radius: 100px;
+            border-radius: 50px;
             max-width: 100%;
             object-fit: contain;
         }
@@ -57,9 +57,10 @@
             background-color: white;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start;
             scrollbar-width: thin;              /* Firefox */
             scrollbar-color: #404857 #fff; /* Firefox */
+            scroll-behavior: smooth;
         }
         .chat-container::-webkit-scrollbar {
             width: 8px;
@@ -286,7 +287,9 @@
     <div class="cabecalho">
         <div class="container-logo">
             <!-- Imagem da logo sem estilos -->
-            <img src="C:\Users\Joao Vitor\OneDrive\Documents\Git_bash\FURIA-PROJECT\static\images\furia-logo.png" alt="Logo FURIA">
+
+            <img src="../static/images/furia-logo.png" alt="Logo FURIA">
+
             <div class="titulo-logo"><h4><em><strong>FURIA</strong></em></h4></div>
         </div>
         <div class="container">
@@ -309,7 +312,7 @@
                                 <li>Notícias recentes</li>
                                 <li>Estatísticas dos jogos</li>
                                 <li>Campeonatos</li>
-                                <li>Line-UP (ainda não funcional)</li>
+                                <li>Line-UP FURIA</li>
                             </ul>
                         </div>
                     </div>
