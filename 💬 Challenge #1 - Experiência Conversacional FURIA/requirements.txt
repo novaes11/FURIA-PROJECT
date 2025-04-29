@@ -1,7 +1,18 @@
-flask==3.0.2
-flask-cors==4.0.0
-requests==2.31.0
-beautifulsoup4==4.12.3
-python-dotenv==1.0.1
-werkzeug==3.0.0
+# Framework web e utilitários
+flask==3.0.2  # Framework web principal
+flask-cors==4.0.0  # Suporte a CORS para requisições cross-origin
+werkzeug==3.0.0  # Utilitários do Flask
+
+# Web scraping e requisições HTTP
+requests==2.31.0  # Biblioteca para fazer requisições HTTP
+beautifulsoup4==4.12.3  # Parser HTML para web scraping
+
+# Configuração e ambiente
+python-dotenv==1.0.0  # Gerenciamento de variáveis de ambiente
+
+# Dependências opcionais (descomente se necessário)
+# gunicorn==21.2.0  # Servidor WSGI para produção
+# pytest==7.4.0  # Framework de testes
+# black==23.7.0  # Formatador de código
+# flake8==6.1.0  # Linter de código
 
