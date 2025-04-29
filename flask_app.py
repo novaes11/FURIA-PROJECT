@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
 
-# Variável para controlar o estado do usuário (em algum lugar no seu código)
+# Dicionário para controlar o estado do usuário durante a conversa
 estado_usuario = {}
 
 # Carrega variáveis de ambiente do arquivo .env
@@ -25,7 +25,19 @@ news_cache = {
 }
 
 def fetch_draft5_data():
-    """Busca dados do site Draft5"""
+    """
+    Busca dados do site Draft5.
+    
+    Esta função faz web scraping do site Draft5 para obter informações sobre:
+    - Notícias da FURIA
+    - Próximas partidas
+    - Resultados
+    - Campeonatos
+    - Line-up da equipe
+    
+    Returns:
+        dict: Dicionário contendo os dados encontrados ou None em caso de erro
+    """
     urls = {
         'news': "https://draft5.gg/equipe/330-FURIA/noticias",
         'matches': "https://draft5.gg/proximas-partidas",
@@ -35,24 +47,20 @@ def fetch_draft5_data():
     }
     
     try:
-        url = "https://draft5.gg/equipe/330-FURIA"  # Coloque aqui o link real
-
+        url = "https://draft5.gg/equipe/330-FURIA"
         response = requests.get(url)
+        
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-
+            
+            # Busca informações do último jogo
             match = soup.find('div', class_='match-result')
             if match:
-                team = match.find('div', class_='team').text
-                score = match.find('div', class_='score').text
-                opponent = match.find('div', class_='opponent').text
-                date = match.find('div', class_='date').text
-
                 return {
-                    "team": team,
-                    "score": score,
-                    "opponent": opponent,
-                    "date": date
+                    "team": match.find('div', class_='team').text,
+                    "score": match.find('div', class_='score').text,
+                    "opponent": match.find('div', class_='opponent').text,
+                    "date": match.find('div', class_='date').text
                 }
             else:
                 return {"error": "Resultado não encontrado"}
@@ -63,15 +71,23 @@ def fetch_draft5_data():
         return None
 
 def fetch_furia_news():
-    """Busca ou retorna do cache as notícias da FURIA"""
+    """
+    Busca ou retorna do cache as notícias da FURIA.
+    
+    Esta função implementa um sistema de cache para evitar requisições desnecessárias.
+    O cache é atualizado a cada 5 minutos.
+    
+    Returns:
+        list: Lista de notícias da FURIA
+    """
     global news_cache
     
-    # Se o cache existe e tem menos de 5 minutos
+    # Verifica se o cache está atualizado (menos de 5 minutos)
     if (news_cache['last_update'] and 
         datetime.now() - news_cache['last_update'] < timedelta(minutes=5)):
         return news_cache['news']
     
-    # Fallback para dados mockados se a busca falhar
+    # Dados mockados para teste (substituir por dados reais posteriormente)
     return [
         {
             "title": "FURIA é derrotada pela The MongolZ e está fora da PGL Bucharest 2025",
@@ -91,7 +107,15 @@ def fetch_furia_news():
     ]
 
 def fetch_furia_lineup():
-    """Retorna o line-up atual da FURIA"""
+    """
+    Retorna o line-up atual da FURIA.
+    
+    Esta função retorna informações detalhadas sobre cada jogador da equipe,
+    incluindo estatísticas e informações pessoais.
+    
+    Returns:
+        dict: Dicionário contendo informações do line-up atual da FURIA
+    """
     return {
         "players": [
             {
@@ -174,7 +198,15 @@ def fetch_furia_lineup():
     }
 
 def fetch_furia_results():
-    """Retorna os últimos resultados da FURIA"""
+    """
+    Retorna os últimos resultados da FURIA.
+    
+    Esta função retorna um histórico detalhado dos últimos jogos da equipe,
+    incluindo placares, estatísticas e informações do torneio.
+    
+    Returns:
+        list: Lista de dicionários contendo informações dos últimos jogos
+    """
     return [
         {
             "data": "08/04/2025",
@@ -268,96 +300,26 @@ def fetch_furia_results():
             }
         }
     ]
+
+# Dicionário para controlar o contexto da conversa com o usuário
 user_context = {
-    "esperando_estatisticas": False,
-    "esperando_data_estatisticas": False
+    "esperando_estatisticas": False,  # Indica se está aguardando confirmação para mostrar estatísticas
+    "esperando_data_estatisticas": False  # Indica se está aguardando a data para mostrar estatísticas
 }
 
-def fetch_furia_lineup():
-    """Retorna o line-up atual da FURIA"""
-    return {
-        "players": [
-            {
-                "nickname": "KSCERATO",
-                "name": "Kaike Cerato",
-                "role": "Rifler",
-                "country": "Brazil",
-                "age": 24,
-                "stats": {
-                    "rating": 1.15,
-                    "kills": 1250,
-                    "deaths": 1000,
-                    "assists": 500,
-                    "headshots": 65
-                }
-            },
-            {
-                "nickname": "yuurih",
-                "name": "Yuri Santos",
-                "role": "Rifler",
-                "country": "Brazil",
-                "age": 23,
-                "stats": {
-                    "rating": 1.12,
-                    "kills": 1200,
-                    "deaths": 1050,
-                    "assists": 480,
-                    "headshots": 62
-                }
-            },
-            {
-                "nickname": "chelo",
-                "name": "André Oliveira",
-                "role": "Rifler",
-                "country": "Brazil",
-                "age": 25,
-                "stats": {
-                    "rating": 1.08,
-                    "kills": 1150,
-                    "deaths": 1080,
-                    "assists": 450,
-                    "headshots": 60
-                }
-            },
-            {
-                "nickname": "FalleN",
-                "name": "Gabriel Toledo",
-                "role": "AWPer",
-                "country": "Brazil",
-                "age": 32,
-                "stats": {
-                    "rating": 1.05,
-                    "kills": 1100,
-                    "deaths": 1100,
-                    "assists": 520,
-                    "headshots": 58
-                }
-            },
-            {
-                "nickname": "skullz",
-                "name": "Rafael Costa",
-                "role": "Rifler",
-                "country": "Brazil",
-                "age": 22,
-                "stats": {
-                    "rating": 1.10,
-                    "kills": 1180,
-                    "deaths": 1060,
-                    "assists": 470,
-                    "headshots": 61
-                }
-            }
-        ],
-        "coach": {
-            "name": "Nicholas Nogueira",
-            "nickname": "guerri",
-            "country": "Brazil",
-            "age": 31
-        }
-    }
-
 def process_chat_message(message):
-    """Processa a mensagem do chat e retorna uma resposta apropriada"""
+    """
+    Processa a mensagem do chat e retorna uma resposta apropriada.
+    
+    Esta função é o coração do chatbot, analisando a mensagem do usuário
+    e retornando respostas relevantes sobre a FURIA.
+    
+    Args:
+        message (str): Mensagem do usuário
+        
+    Returns:
+        str: Resposta formatada em HTML
+    """
     message = message.lower()
     global user_context
     
@@ -400,7 +362,8 @@ def process_chat_message(message):
                     response_html = response.replace("\n", "<br>")
                     return response_html
         return "Desculpe, não consegui encontrar as estatísticas para a data informada. As datas disponíveis são: 08/04/2025, 07/04/2025, 06/04/2025, 05/04/2025"
-
+    
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai aguardar uma data para mostrar as estatisticas.
     elif "específicas" in message or "stats" in message or "estatisticas" in message:
         user_context["esperando_data_estatisticas"] = True
         response = "Por favor, especifique a data do jogo que deseja ver as estatísticas.\n"
@@ -412,10 +375,12 @@ def process_chat_message(message):
         response_html = response.replace("\n", "<br>")
         return response_html
     
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai responder uma mensagem de despedida.
     elif "tchau" in message or "até logo" in message or "adeus" in message or "muito obrigado" in message or "obrigado" in message or "flw" in message:
 
         return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
     
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar as noticias mais recentes.
     elif "notícia" in message or "novidade" in message or "noticia" in message or "noticias" in message or "novidades" in message:
         news = fetch_furia_news()
         if news:
@@ -434,6 +399,7 @@ def process_chat_message(message):
             return response
         return "Desculpe, não consegui encontrar notícias recentes."
     
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o último jogo da FURIA.
     elif "resultado do" in message or "último jogo" in message or "ultimo jogo" in message or "ultimo resultado da" in message or "ultima partida" in message or "última" in message or "última partida" in message or "ultima" in message:
         
         results = fetch_furia_results()
@@ -458,9 +424,9 @@ def process_chat_message(message):
 
             return response.replace("\n", "<br>")
 
-            # 📌 IF 2 — Se o usuário respondeu "sim" e está esperando as estatísticas
+            # 📌 Se o usuário respondeu "sim" e está esperando as estatísticas
     if user_context["esperando_estatisticas"] and ("sim" in message or "estatísticas" in message):
-        # Desativa o estado para evitar repetir
+            # Desativa o estado para evitar repetir
         user_context["esperando_estatisticas"] = False
 
         results = fetch_furia_results()
@@ -499,7 +465,7 @@ def process_chat_message(message):
     # ❓ Caso nada tenha sido entendido
         return "Desculpe, não entendi sua mensagem. Quer tentar de outro jeito? 🤔"
 
-    # 📌 IF 3 — Usuário respondeu "não" ao convite de ver estatísticas
+    # 📌 Usuário respondeu "não" ao convite de ver estatísticas
     if user_context["esperando_estatisticas"] and ("não" in message or "nao" in message):
         # Desativa o contexto
         user_context["esperando_estatisticas"] = False
@@ -545,7 +511,7 @@ def process_chat_message(message):
         
         
     
-
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o próximo jogo da FURIA.
     elif "próximo jogo" in message or "próxima partida" in message or "proximo jogo" in message or "proxima partida" in message or "próximos jogos" in message or "proximos jogos" in message:
 
         response = "O próximo compromisso da FURIA é a PGL Astana 2025, que será realizada entre os dias 10 e 18 de maio, no Cazaquistão.\n\n"
@@ -562,6 +528,7 @@ def process_chat_message(message):
         return response_html
         return response
     
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o campeonato em qual a furia estara participando.
     elif "campeonato" in message or "torneio" in message:
         response = "A FURIA está classificada para a PGL Astana 2025, que acontecerá em maio no Cazaquistão.\n\n"
         response += "Precisa de mais alguma informação, torcedor?🐯🔥\nPosso te ajudar com:\n"
@@ -576,6 +543,7 @@ def process_chat_message(message):
         return response_html
         return response
     
+    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o line-up da FURIA.
     elif "line-up" in message or "lineup" in message or "jogadores" in message or "equipe" in message or "time" in message:
         lineup = fetch_furia_lineup()
         response = "🐯 LINE-UP DA FURIA 🐯\n"
@@ -627,26 +595,35 @@ def process_chat_message(message):
         return response_html
         return response
 
+#rota principal que renderiza a página inicial
 @app.route('/')
 def home():
+    """Rota principal que renderiza a página inicial"""
     return render_template('index.html')
 
+#rota da API para obter notícias
 @app.route('/api/news')
 def get_news():
+    """Rota da API para obter notícias"""
     news = fetch_furia_news()
     return jsonify(news)
 
+#rota da API para processar mensagens do chat
 @app.route('/api/chat', methods=['POST'])
 def chat():
+    """Rota da API para processar mensagens do chat"""
     data = request.json
     message = data.get('message', '')
     response = process_chat_message(message)
     return jsonify({'response': response})
 
+#rota da API para obter o line-up atual da FURIA
 @app.route('/api/lineup')
 def get_lineup():
+    """Rota da API para obter o line-up atual da FURIA"""
     lineup = fetch_furia_lineup()
     return jsonify(lineup)
 
+#rota principal que inicia o servidor
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True) 
