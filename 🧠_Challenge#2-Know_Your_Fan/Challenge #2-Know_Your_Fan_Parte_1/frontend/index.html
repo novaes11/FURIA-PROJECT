@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FURIA Insight Engine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/furia-logo.png" alt="FURIA Logo">
+                <h1>FURIA Insight Engine</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#fans">Fãs</a></li>
+                    <li><a href="#analytics">Análises</a></li>
+                    <li><a href="#campaigns">Campanhas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Conheça seus fãs</h2>
+                <p>Análise profunda do perfil dos fãs da FURIA para criar experiências personalizadas e engajadoras.</p>
+                <a href="#dashboard" class="btn btn-primary">Começar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard">
+        <div class="container">
+            <h2>Dashboard</h2>
+            <div class="dashboard-grid">
+                <!-- Card de Total de Fãs -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total de Fãs</h3>
+                        <p class="number">1,234</p>
+                        <p class="trend positive">+15% este mês</p>
+                    </div>
+                </div>
+
+                <!-- Card de Engajamento -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Engajamento Médio</h3>
+                        <p class="number">75%</p>
+                        <p class="trend positive">+5% esta semana</p>
+                    </div>
+                </div>
+
+                <!-- Card de Redes Sociais -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Interações Sociais</h3>
+                        <p class="number">45.6K</p>
+                        <p class="trend positive">+20% hoje</p>
+                    </div>
+                </div>
+
+                <!-- Card de Campanhas -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Campanhas Ativas</h3>
+                        <p class="number">3</p>
+                        <p class="trend">2 em planejamento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fans Section -->
+    <section id="fans" class="fans">
+        <div class="container">
+            <h2>Perfis de Fãs</h2>
+            <div class="fans-grid">
+                <!-- Card de Perfil de Fã 1 -->
+                <div class="fan-card">
+                    <div class="fan-header">
+                        <img src=".../Challenge #2-Know_Your_Fan_Parte_1/frontend/images/r6.jpeg" alt="Avatar" class="fan-avatar">
+                        <div class="fan-info">
+                            <h3>João Silva</h3>
+                            <p class="fan-location">São Paulo, SP</p>
+                        </div>
+                    </div>
+                    <div class="fan-stats">
+                        <div class="stat">
+                            <span class="label">Engajamento</span>
+                            <span class="value">85%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Interações</span>
+                            <span class="value">234</span>
+                        </div>
+                    </div>
+                    <div class="fan-interests">
+                        <h4>Interesses</h4>
+                        <div class="tags">
+                            <span class="tag">CS:GO</span>
+                            <span class="tag">Streaming</span>
+                            <span class="tag">E-sports</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Perfil de Fã 2 -->
+                <div class="fan-card">
+                    <div class="fan-header">
+                        <img src="images/avatar-placeholder.jpg" alt="Avatar" class="fan-avatar">
+                        <div class="fan-info">
+                            <h3>Maria Santos</h3>
+                            <p class="fan-location">Rio de Janeiro, RJ</p>
+                        </div>
+                    </div>
+                    <div class="fan-stats">
+                        <div class="stat">
+                            <span class="label">Engajamento</span>
+                            <span class="value">92%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Interações</span>
+                            <span class="value">456</span>
+                        </div>
+                    </div>
+                    <div class="fan-interests">
+                        <h4>Interesses</h4>
+                        <div class="tags">
+                            <span class="tag">CS:GO</span>
+                            <span class="tag">Competições</span>
+                            <span class="tag">Gaming</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Perfil de Fã 3 -->
+                <div class="fan-card">
+                    <div class="fan-header">
+                        <img src="images/avatar-placeholder.jpg" alt="Avatar" class="fan-avatar">
+                        <div class="fan-info">
+                            <h3>Pedro Oliveira</h3>
+                            <p class="fan-location">Belo Horizonte, MG</p>
+                        </div>
+                    </div>
+                    <div class="fan-stats">
+                        <div class="stat">
+                            <span class="label">Engajamento</span>
+                            <span class="value">78%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Interações</span>
+                            <span class="value">189</span>
+                        </div>
+                    </div>
+                    <div class="fan-interests">
+                        <h4>Interesses</h4>
+                        <div class="tags">
+                            <span class="tag">CS:GO</span>
+                            <span class="tag">Streaming</span>
+                            <span class="tag">E-sports</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section id="analytics" class="analytics">
+        <div class="container">
+            <h2>Análises</h2>
+            <div class="analytics-grid">
+                <!-- Gráfico de Engajamento -->
+                <div class="chart-card">
+                    <h3>Engajamento por Plataforma</h3>
+                    <div class="chart">
+                        <canvas id="engagementChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Demografia -->
+                <div class="chart-card">
+                    <h3>Demografia</h3>
+                    <div class="chart">
+                        <canvas id="demographicsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Interações -->
+                <div class="chart-card">
+                    <h3>Interações por Tipo</h3>
+                    <div class="chart">
+                        <canvas id="interactionsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Crescimento -->
+                <div class="chart-card">
+                    <h3>Crescimento Mensal</h3>
+                    <div class="chart">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaigns Section -->
+    <section id="campaigns" class="campaigns">
+        <div class="container">
+            <h2>Campanhas</h2>
+            <div class="campaigns-grid">
+                <!-- Card de Campanha 1 -->
+                <div class="campaign-card">
+                    <div class="campaign-header">
+                        <h3>FURIA Gaming Week</h3>
+                        <span class="status active">Ativa</span>
+                    </div>
+                    <div class="campaign-content">
+                        <p>Semana especial com conteúdo exclusivo e interações com os jogadores.</p>
+                        <div class="campaign-stats">
+                            <div class="stat">
+                                <span class="label">Alcance</span>
+                                <span class="value">50K</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Engajamento</span>
+                                <span class="value">25%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Campanha 2 -->
+                <div class="campaign-card">
+                    <div class="campaign-header">
+                        <h3>Meet & Greet Virtual</h3>
+                        <span class="status active">Ativa</span>
+                    </div>
+                    <div class="campaign-content">
+                        <p>Encontro virtual com os jogadores da FURIA para os fãs mais engajados.</p>
+                        <div class="campaign-stats">
+                            <div class="stat">
+                                <span class="label">Alcance</span>
+                                <span class="value">30K</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Engajamento</span>
+                                <span class="value">40%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Campanha 3 -->
+                <div class="campaign-card">
+                    <div class="campaign-header">
+                        <h3>FURIA Merch Collection</h3>
+                        <span class="status active">Ativa</span>
+                    </div>
+                    <div class="campaign-content">
+                        <p>Nova coleção de produtos exclusivos da FURIA.</p>
+                        <div class="campaign-stats">
+                            <div class="stat">
+                                <span class="label">Alcance</span>
+                                <span class="value">75K</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Engajamento</span>
+                                <span class="value">35%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/furia-logo.png" alt="FURIA Logo">
+                    <p>FURIA Insight Engine</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#fans">Fãs</a></li>
+                        <li><a href="#analytics">Análises</a></li>
+                        <li><a href="#campaigns">Campanhas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-icons">
+                        <a href="https://x.com/FURIA"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/furiagg/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/results?search_query=furia+"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.twitch.tv/furiatv"><i class="fab fa-twitch"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FURIA Insight Engine. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
