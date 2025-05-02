@@ -79,7 +79,7 @@ Criar um sistema inteligente que entenda quem são os fãs da FURIA, seus intere
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend
-- Python 3.8+
+- Python 3.8+ (recomendado: python 3.12.10)
 - FastAPI/Flask
 - PostgreSQL
 - AWS S3
@@ -106,7 +106,7 @@ Criar um sistema inteligente que entenda quem são os fãs da FURIA, seus intere
 
 ## 📋 Requisitos do Sistema
 
-- Python 3.8+
+- Python 3.8+ (recomendado: python 3.12.10)
 - Node.js 14+
 - PostgreSQL 12+
 - AWS Account (para S3)
