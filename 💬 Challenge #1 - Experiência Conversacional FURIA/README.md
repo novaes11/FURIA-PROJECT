@@ -33,7 +33,7 @@ Criar uma interface conversacional que permita aos fãs da FURIA obter informaç
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Backend**: Python 3.8+ com Flask
+- **Backend**: Python 3.8+ com Flask (recomendado: python 3.12.10)
 - **Frontend**: HTML5, CSS3, JavaScript
 - **APIs**: Draft5 (web scraping)
 - **Cache**: Sistema de cache em memória
