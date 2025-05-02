@@ -175,9 +175,8 @@ O FURIA Insight Engine é uma plataforma inteligente para análise e compreensã
 ## 📞 Suporte
 
 ### 1. Canais de Atendimento
-- Email: suporte@furia.com
-- Chat: [LINK_DO_CHAT]
-- Telefone: [NUMERO]
+- Email: jvn.novaes@gmail.com
+- Telefone: (43) 99191-2254
 
 ### 2. Horário de Atendimento
 - Segunda a Sexta: 9h às 18h
@@ -199,7 +198,7 @@ O FURIA Insight Engine é uma plataforma inteligente para análise e compreensã
 
 ### 1. Versão Atual
 - Número: 1.0.0
-- Data: [DATA]
+- Data: 01/05/2025
 - Novidades:
   - Dashboard interativo
   - Análises avançadas
@@ -215,7 +214,7 @@ O FURIA Insight Engine é uma plataforma inteligente para análise e compreensã
 
 ### 1. Como Enviar
 - Formulário de feedback
-- Email: feedback@furia.com
+- Email: jvn.novaes@gmail.com
 - Chat de suporte
 
 ### 2. O que Incluir
