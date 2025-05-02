@@ -31,7 +31,7 @@ FURIA-PROJECT/
 ├── Challenge#2-Know_Your_Fan/
 │   └── Solução de personalização baseada no fã
 └── README.md  ← Este arquivo
-
+```
 🎥 Entregas
 Protótipos funcionais navegáveis
 
