@@ -32,14 +32,14 @@ FURIA-PROJECT/
 │   └── Solução de personalização baseada no fã
 └── README.md  ← Este arquivo
 ```
-🎥 Entregas
+## 🎥 Entregas
 Protótipos funcionais navegáveis
 
 Vídeos demonstrando o uso e a interface
 
 Documentação técnica no GitHub com instruções claras de uso
 
-📬 Submissão
+## 📬 Submissão
 Este projeto foi submetido à equipe da FURIA dentro do prazo estipulado no processo seletivo, como forma de demonstrar:
 
 Capacidade de desenvolver soluções completas
@@ -48,6 +48,6 @@ Habilidade em aplicar boas práticas de desenvolvimento
 
 Criatividade e empatia com o público-alvo (os fãs da FURIA!)
 
-✍️ Sobre Mim
+## ✍️ Sobre Mim
 Meu nome é João Vitor, sou estudante de graduação com formação prevista a partir de 2026. Sou apaixonado por tecnologia, esportes eletrônicos e estou sempre em busca de desafios que unam inovação com impacto real. Esta foi uma oportunidade de ouro para mostrar meu potencial e mergulhar no universo FURIA com orgulho!
 
