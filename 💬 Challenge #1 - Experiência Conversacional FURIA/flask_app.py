@@ -363,7 +363,7 @@ def process_chat_message(message):
                     return response_html
         return "Desculpe, não consegui encontrar as estatísticas para a data informada. As datas disponíveis são: 08/04/2025, 07/04/2025, 06/04/2025, 05/04/2025"
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai aguardar uma data para mostrar as estatisticas.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai aguardar uma data para mostrar as estatisticas.
     elif "específicas" in message or "stats" in message or "estatisticas" in message:
         user_context["esperando_data_estatisticas"] = True
         response = "Por favor, especifique a data do jogo que deseja ver as estatísticas.\n"
@@ -375,12 +375,12 @@ def process_chat_message(message):
         response_html = response.replace("\n", "<br>")
         return response_html
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai responder uma mensagem de despedida.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai responder uma mensagem de despedida.
     elif "tchau" in message or "até logo" in message or "adeus" in message or "muito obrigado" in message or "obrigado" in message or "flw" in message:
 
         return "Valeu, torcedor! Vamo que vamo com a FURIA! 🐯🔥 #VamoFURIA"
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar as noticias mais recentes.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar as noticias mais recentes.
     elif "notícia" in message or "novidade" in message or "noticia" in message or "noticias" in message or "novidades" in message:
         news = fetch_furia_news()
         if news:
@@ -399,7 +399,7 @@ def process_chat_message(message):
             return response
         return "Desculpe, não consegui encontrar notícias recentes."
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o último jogo da FURIA.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o último jogo da FURIA.
     elif "resultado do" in message or "último jogo" in message or "ultimo jogo" in message or "ultimo resultado da" in message or "ultima partida" in message or "última" in message or "última partida" in message or "ultima" in message:
         
         results = fetch_furia_results()
@@ -419,12 +419,12 @@ def process_chat_message(message):
             response += "\n" + "=" * 40 + "\n\n"
             response += "❓ Deseja ver as estatísticas detalhadas deste jogo?\n"
             
-              # 👉 Ativa o contexto de estatísticas
+              #  Ativa o contexto de estatísticas
             user_context["esperando_estatisticas"] = True
 
             return response.replace("\n", "<br>")
 
-            # 📌 Se o usuário respondeu "sim" e está esperando as estatísticas
+            # Se o usuário respondeu "sim" e está esperando as estatísticas
     if user_context["esperando_estatisticas"] and ("sim" in message or "estatísticas" in message):
             # Desativa o estado para evitar repetir
         user_context["esperando_estatisticas"] = False
@@ -462,10 +462,10 @@ def process_chat_message(message):
             response += "- Line-up FURIA\n"
             return response.replace("\n", "<br>")
 
-    # ❓ Caso nada tenha sido entendido
+    # Caso nada tenha sido entendido
         return "Desculpe, não entendi sua mensagem. Quer tentar de outro jeito? 🤔"
 
-    # 📌 Usuário respondeu "não" ao convite de ver estatísticas
+    # Usuário respondeu "não" ao convite de ver estatísticas
     if user_context["esperando_estatisticas"] and ("não" in message or "nao" in message):
         # Desativa o contexto
         user_context["esperando_estatisticas"] = False
@@ -511,7 +511,7 @@ def process_chat_message(message):
         
         
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o próximo jogo da FURIA.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o próximo jogo da FURIA.
     elif "próximo jogo" in message or "próxima partida" in message or "proximo jogo" in message or "proxima partida" in message or "próximos jogos" in message or "proximos jogos" in message:
 
         response = "O próximo compromisso da FURIA é a PGL Astana 2025, que será realizada entre os dias 10 e 18 de maio, no Cazaquistão.\n\n"
@@ -528,7 +528,7 @@ def process_chat_message(message):
         return response_html
         return response
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o campeonato em qual a furia estara participando.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o campeonato em qual a furia estara participando.
     elif "campeonato" in message or "torneio" in message:
         response = "A FURIA está classificada para a PGL Astana 2025, que acontecerá em maio no Cazaquistão.\n\n"
         response += "Precisa de mais alguma informação, torcedor?🐯🔥\nPosso te ajudar com:\n"
@@ -543,7 +543,7 @@ def process_chat_message(message):
         return response_html
         return response
     
-    #caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o line-up da FURIA.
+    # Caso encontre as seguintes palavras na mensagem do usuario, o chatbot vai mostrar o line-up da FURIA.
     elif "line-up" in message or "lineup" in message or "jogadores" in message or "equipe" in message or "time" in message:
         lineup = fetch_furia_lineup()
         response = "🐯 LINE-UP DA FURIA 🐯\n"
@@ -595,20 +595,20 @@ def process_chat_message(message):
         return response_html
         return response
 
-#rota principal que renderiza a página inicial
+# Rota principal que renderiza a página inicial
 @app.route('/')
 def home():
     """Rota principal que renderiza a página inicial"""
     return render_template('index.html')
 
-#rota da API para obter notícias
+# Rota da API para obter notícias
 @app.route('/api/news')
 def get_news():
     """Rota da API para obter notícias"""
     news = fetch_furia_news()
     return jsonify(news)
 
-#rota da API para processar mensagens do chat
+# Rota da API para processar mensagens do chat
 @app.route('/api/chat', methods=['POST'])
 def chat():
     """Rota da API para processar mensagens do chat"""
@@ -617,13 +617,13 @@ def chat():
     response = process_chat_message(message)
     return jsonify({'response': response})
 
-#rota da API para obter o line-up atual da FURIA
+# Rota da API para obter o line-up atual da FURIA
 @app.route('/api/lineup')
 def get_lineup():
     """Rota da API para obter o line-up atual da FURIA"""
     lineup = fetch_furia_lineup()
     return jsonify(lineup)
 
-#rota principal que inicia o servidor
+# Rota principal que inicia o servidor
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True) 
