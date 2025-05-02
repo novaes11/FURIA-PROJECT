@@ -49,5 +49,5 @@ Habilidade em aplicar boas práticas de desenvolvimento
 Criatividade e empatia com o público-alvo (os fãs da FURIA!)
 
 ## ✍️ Sobre Mim
-Meu nome é João Vitor, sou estudante de graduação com formação prevista a partir de 2026. Sou apaixonado por tecnologia, esportes eletrônicos e estou sempre em busca de desafios que unam inovação com impacto real. Esta foi uma oportunidade de ouro para mostrar meu potencial e mergulhar no universo FURIA com orgulho!
+Meu nome é João Vitor, sou estudante de graduação em Ciências da Computação. Sou apaixonado por tecnologia, esportes eletrônicos e estou sempre em busca de desafios que unam inovação com impacto real. Esta foi uma oportunidade de ouro para mostrar meu potencial e mergulhar no universo FURIA com orgulho!
 
