@@ -184,6 +184,14 @@ furia-insight-engine/
 4. Push para a branch (`git push origin feature/nova-feature`)
 5. Abra um Pull Request
 
+👉 Para informações sobre contribuição, testes, estilo de código e deploy, acesse o [Guia de Desenvolvimento](docs/Guia_de_Desenvolvimento.md).
+
+📘 Para aprender a usar a plataforma, acesse o [Guia do Usuário](docs/Guia_do_Usuario.md).
+
+## 📚 Documentação
+
+- [Documentação Docker](docs/Documentação_Docker.md)
+
 ## 👥 Autores
 
 - João Vitor Novaes - Desenvolvedor Principal
